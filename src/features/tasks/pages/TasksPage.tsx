@@ -7,8 +7,16 @@ import type { Task } from "../types";
 import styles from "./TasksPage.module.css";
 
 const TasksPage = () => {
-  const { tasks, addTask, storageError, canEdit, hasUnsavedChanges, retryLoad, retrySave } =
-    useTasks();
+  const {
+    tasks,
+    addTask,
+    updateTask,
+    storageError,
+    canEdit,
+    hasUnsavedChanges,
+    retryLoad,
+    retrySave,
+  } = useTasks();
   const [isAddOpen, setIsAddOpen] = useState(false);
 
   return (
@@ -18,7 +26,7 @@ const TasksPage = () => {
         variant="contained"
         disabled={!canEdit}
         onClick={() => setIsAddOpen(true)}
-        sx={{ mb: 2 }}
+        className={styles.addButton}
       >
         タスクを追加
       </Button>
@@ -33,15 +41,25 @@ const TasksPage = () => {
       )}
       {hasUnsavedChanges && <p role="status">未保存の変更があります。</p>}
       {canEdit && tasks.length === 0 && <p>タスクはありません。</p>}
-      <TaskList tasks={tasks} />
+      <TaskList
+        tasks={tasks}
+        disabled={!canEdit}
+        onProgressChange={(id, progress) => updateTask(id, { progress })}
+      />
     </main>
   );
 };
 
-const TaskList = ({ tasks }: { tasks: Task[] }) => (
+type TaskListProps = {
+  tasks: Task[];
+  disabled: boolean;
+  onProgressChange: (id: string, progress: number) => void;
+};
+
+const TaskList = ({ tasks, disabled, onProgressChange }: TaskListProps) => (
   <section className={styles.taskList} aria-label="タスク一覧">
     {tasks.map((task) => (
-      <TaskCard key={task.id} task={task} />
+      <TaskCard key={task.id} task={task} disabled={disabled} onProgressChange={onProgressChange} />
     ))}
   </section>
 );

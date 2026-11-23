@@ -42,6 +42,8 @@ Use pnpm to match the committed `pnpm-lock.yaml`:
 
 ## Coding Style & Naming Conventions
 
+Use colocated CSS Modules (`*.module.css`) for static custom styles, including styles applied to MUI components via `className`. Express responsive layouts with CSS media queries. Reserve `sx` for styles that need runtime values; keep static layout and spacing in CSS Modules.
+
 Use two-space indentation, functional React components, and TypeScript types for component inputs and shared data. Name component files in PascalCase, such as `TaskCard.tsx`, and ordinary variables and functions in camelCase. Preserve existing model fields such as `due_date` unless deliberately migrating their consumers. Use `import type` for type-only imports. Quote and semicolon styles currently vary; match the surrounding file. Oxlint is configured; no dedicated formatter is configured. Respect TypeScript checks for unused locals and parameters.
 
 ## Testing Guidelines

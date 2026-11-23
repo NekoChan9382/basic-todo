@@ -2,7 +2,6 @@ import type { NewTaskInput, Task } from "../types";
 
 let sequence = 0;
 
-/** 現在時刻と連番で ID を作り、読み込み済みタスクとの重複も避ける。 */
 export const createTask = (input: NewTaskInput, existingTasks: readonly Task[]): Task => {
   const title = input.title.trim();
   if (!title) throw new Error("タイトルを入力してください。");

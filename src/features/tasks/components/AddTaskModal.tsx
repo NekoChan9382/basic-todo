@@ -5,10 +5,10 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import Modal from "@mui/material/Modal";
-import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import type { NewTaskInput } from "../types";
+import styles from "./AddTaskModal.module.css";
 
 type AddTaskModalProps = {
   onAdd: (input: NewTaskInput) => void;
@@ -53,23 +53,9 @@ const AddTaskModal = ({ onAdd, onClose }: AddTaskModalProps) => {
         aria-labelledby={headingId}
         aria-describedby={descriptionId}
         tabIndex={-1}
-        sx={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: "calc(100% - 2rem)",
-          maxWidth: 520,
-          maxHeight: "calc(100dvh - 2rem)",
-          overflowY: "auto",
-          boxSizing: "border-box",
-          bgcolor: "background.paper",
-          borderRadius: 2,
-          boxShadow: 24,
-          p: { xs: 2, sm: 3 },
-        }}
+        className={styles.dialog}
       >
-        <Stack component="form" spacing={2.5} onSubmit={handleSubmit}>
+        <Box component="form" className={styles.form} onSubmit={handleSubmit}>
           <Typography id={headingId} component="h2" variant="h6">
             タスクを追加
           </Typography>
@@ -107,15 +93,15 @@ const AddTaskModal = ({ onAdd, onClose }: AddTaskModalProps) => {
             fullWidth
             slotProps={{ inputLabel: { shrink: true } }}
           />
-          <Stack direction="row" justifyContent="flex-end" spacing={1}>
+          <Box className={styles.actions}>
             <Button type="button" onClick={onClose}>
               キャンセル
             </Button>
             <Button type="submit" variant="contained">
               追加
             </Button>
-          </Stack>
-        </Stack>
+          </Box>
+        </Box>
       </Box>
     </Modal>
   );
