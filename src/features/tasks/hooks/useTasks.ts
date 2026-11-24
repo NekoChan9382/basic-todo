@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { loadTasks, saveTasks } from "../storage/taskStorage.ts";
 import type { NewTaskInput, Task } from "../types";
+import { mergeImportedTasks, parseTasksNdjson } from "../lib/taskNdjson.ts";
 import { createTask } from "../lib/createTask.ts";
 
 type NewTask = Omit<Task, "id">;
@@ -69,6 +70,12 @@ export const useTasks = () => {
     );
   };
 
+  const importTasks = (text: string) => {
+    if (loadError !== null) throw new Error("保存データを読み込んでからインポートしてください。");
+    const incoming = parseTasksNdjson(text);
+    setTasks((current) => mergeImportedTasks(current, incoming));
+  };
+
   const retryLoad = () => {
     if (loadError === null) return;
     const result = loadTasks();
@@ -87,6 +94,7 @@ export const useTasks = () => {
     addTask,
     updateTask,
     deleteTask,
+    importTasks,
     canEdit: loadError === null,
     storageError: loadError ?? saveError,
     hasUnsavedChanges: tasks !== savedTasks,

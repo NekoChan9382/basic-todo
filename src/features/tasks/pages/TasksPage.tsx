@@ -2,6 +2,7 @@ import { useState } from "react";
 import Button from "@mui/material/Button";
 import AddTaskModal from "../components/AddTaskModal";
 import EditTaskModal from "../components/EditTaskModal";
+import TaskTransfer from "../components/TaskTransfer";
 import TaskCard from "../components/TaskCard";
 import { useTasks } from "../hooks/useTasks";
 import type { Task } from "../types";
@@ -13,6 +14,7 @@ const TasksPage = () => {
     addTask,
     updateTask,
     deleteTask,
+    importTasks,
     storageError,
     canEdit,
     hasUnsavedChanges,
@@ -55,6 +57,7 @@ const TasksPage = () => {
         )}
         {hasUnsavedChanges && <p role="status">未保存の変更があります。</p>}
       </div>
+      <TaskTransfer tasks={tasks} disabled={!canEdit} onImport={importTasks} />
       {canEdit && tasks.length === 0 && <p>タスクはありません。</p>}
       <TaskList
         tasks={tasks}
