@@ -11,5 +11,22 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      const current = window.location;
+
+      if (current.search.startsWith("?/")) {
+        const restored = current.search
+          .slice(1)
+          .split("&")
+          .map((part) => part.replace(/~and~/g, "&"))
+          .join("?");
+
+        window.history.replaceState(
+          null,
+          "",
+          current.pathname.replace(/\/$/, "") + restored + current.hash,
+        );
+      }
+    </script>
   </body>
 </html>
