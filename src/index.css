@@ -1,11 +1,15 @@
-/* アプリ全体の基本スタイル。機能固有のスタイルは各 feature に配置する。 */
-body {
-  margin: 0;
-  font-family: system-ui, sans-serif;
+/* Hallmark · shape: app screen · genre: modern-minimal · theme: brand · redesign: restyle
+ * paper: white · accent: user-specified #ba55d3 and #ee82ee · display: system Japanese sans · body: system Japanese sans
+ * nav: persistent left task navigation by request · signature: deadline and priority task queues · states: loading, empty, storage error, populated
+ * axes: light/grotesk-sans/chromatic-purple · posture: restrained · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S3 R5 V3 · weakest: S, use the task queues as the working surface; remove statistic tiles and decorative copy */
+/* Hallmark · dropped decorative taglines, eyebrow labels, sidebar advice, repeated empty-state hints · user requested unnecessary text removal */
+@import url("./tokens.css");
+@import url("./base.css");
+:root {
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
 }
-
-main {
-  max-width: 64rem;
-  margin: 0 auto;
-  padding: 2rem;
+body {
+  min-width: 320px;
 }

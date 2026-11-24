@@ -1,0 +1,145 @@
+/* Hallmark · shape: app screen · genre: modern-minimal · theme: brand · redesign: restyle · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S3 R5 V3 · weakest: S, preserve the task workflow and simplify the working surfaces */
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  gap: 1.5rem;
+}
+.heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 1rem;
+}
+.heading h1 {
+  text-wrap: balance;
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 1.4;
+  font-weight: 500;
+}
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 2rem;
+  flex-shrink: 0;
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+.stats strong {
+  margin-inline: 0.375rem;
+  font-weight: 500;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.panels {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  min-height: 0;
+}
+.panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+.panelHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  min-height: 68px;
+  padding: 0 0 0.75rem;
+  flex-shrink: 0;
+  border-bottom: 2px solid var(--brand);
+}
+.panelTitle {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 0.625rem;
+}
+.panelIcon {
+  display: flex;
+  color: var(--brand-ink);
+}
+.panelTitle h2 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+.count {
+  margin-left: auto;
+  min-width: 28px;
+  padding: 0.1rem 0.375rem;
+  background: var(--color-badge);
+  color: var(--muted);
+  text-align: center;
+  font-size: 0.75rem;
+}
+.panelHeader p {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: 0.6875rem;
+  color: var(--muted);
+}
+.panelList {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 1rem;
+  background: var(--color-paper-2);
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-muted) transparent;
+}
+.panelList > * {
+  flex-shrink: 0;
+}
+.empty {
+  padding: 1.5rem 0.5rem;
+  text-align: center;
+}
+.empty p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+@media (max-height: 760px) and (min-width: 761px) {
+  .page {
+    gap: 1rem;
+  }
+}
+@media (max-width: 760px) {
+  .page {
+    height: auto;
+    gap: 1.25rem;
+  }
+  .heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .heading h1 {
+    text-wrap: balance;
+    font-size: 1.25rem;
+  }
+  .stats {
+    gap: 0.5rem 1rem;
+  }
+  .panels {
+    grid-template-columns: 1fr;
+  }
+  .panelList {
+    max-height: 380px;
+    flex: auto;
+  }
+}

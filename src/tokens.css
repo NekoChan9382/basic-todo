@@ -1,0 +1,56 @@
+/* Hallmark · shape: app screen · genre: modern-minimal · theme: brand · redesign: restyle · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S3 R5 V3 · weakest: S, retain the task deadline queues and existing user palette instead of generic statistic tiles */
+:root {
+  --font-body: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  --font-display: var(--font-body);
+  --color-paper: #fff;
+  --color-paper-2: color-mix(in srgb, var(--accent) 5%, var(--color-paper));
+  --color-paper-3: #f5f5f5;
+  --color-ink: #262626;
+  --color-ink-2: #4b4b4b;
+  --color-muted: #737373;
+  --color-rule: #e0e0e0;
+  --color-accent: #ba55d3;
+  --color-accent-ink: #fff;
+  --color-focus: #87409c;
+  --color-error: #a32d43;
+  --color-success: #307448;
+  --brand: var(--color-accent);
+  --accent: #ee82ee;
+  --brand-ink: var(--color-focus);
+  --brand-soft: #f4e6f9;
+  --surface: var(--color-paper);
+  --text: var(--color-ink);
+  --muted: var(--color-muted);
+  --border: var(--color-rule);
+  --color-hover: color-mix(in srgb, var(--accent) 26%, var(--color-paper));
+  --color-selected: color-mix(in srgb, var(--accent) 32%, var(--color-paper));
+  --color-badge: color-mix(in srgb, var(--accent) 14%, var(--color-paper));
+  --color-track: color-mix(in srgb, var(--accent) 16%, var(--color-paper));
+  --color-priority-surface: color-mix(in srgb, var(--accent) 8%, var(--color-paper));
+  --color-priority-text: #625a6b;
+  --color-card-hover: #a24ab8;
+  --color-quiet-surface: color-mix(in srgb, var(--accent) 4%, var(--color-paper));
+  --color-selection: #ee82ee66;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-title: 1.125rem;
+  --text-section: 1.25rem;
+  --text-display: 1.5rem;
+  --display-weight: 500;
+  --tracking-display: 0;
+  --container: 1600px;
+  --gutter: 32px;
+  --dur-micro: 120ms;
+  --dur-short: 180ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --radius-card: 0;
+  --radius-pill: 0;
+  --shadow-card: none;
+}

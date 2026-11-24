@@ -1,93 +1,63 @@
-import { useState } from "react";
 import Button from "@mui/material/Button";
-import AddTaskModal from "../components/AddTaskModal";
-import EditTaskModal from "../components/EditTaskModal";
+import Icon from "../../../shared/components/Icon";
 import TaskTransfer from "../components/TaskTransfer";
 import TaskCard from "../components/TaskCard";
-import { useTasks } from "../hooks/useTasks";
-import type { Task } from "../types";
+import { useTaskWorkspace } from "../hooks/useTaskWorkspace";
 import styles from "./TasksPage.module.css";
 
 const TasksPage = () => {
-  const {
-    tasks,
-    addTask,
-    updateTask,
-    deleteTask,
-    importTasks,
-    storageError,
-    canEdit,
-    hasUnsavedChanges,
-    retryLoad,
-    retrySave,
-  } = useTasks();
-  const [isAddOpen, setIsAddOpen] = useState(false);
-  const [editingTaskId, setEditingTaskId] = useState<string | null>(null);
-  const editingTask = tasks.find((task) => task.id === editingTaskId);
+  const { tasks, updateTask, importTasks, canEdit, openAdd, openEdit } = useTaskWorkspace();
 
   return (
-    <main>
-      <h1>タスク管理</h1>
-      <div className={styles.buttonBar}>
+    <div className={styles.page}>
+      <header className={styles.heading}>
+        <div className={styles.titleRow}>
+          <h1>タスク一覧</h1>
+          <span className={styles.count}>{tasks.length} 件</span>
+        </div>
         <Button
           variant="contained"
+          startIcon={<Icon name="plus" />}
           disabled={!canEdit}
-          onClick={() => setIsAddOpen(true)}
-          className={styles.addButton}
+          onClick={openAdd}
         >
           タスクを追加
         </Button>
-        {isAddOpen && <AddTaskModal onAdd={addTask} onClose={() => setIsAddOpen(false)} />}
-        {editingTask && (
-          <EditTaskModal
-            key={editingTask.id}
-            task={editingTask}
-            onUpdate={updateTask}
-            onDelete={deleteTask}
-            onClose={() => setEditingTaskId(null)}
-          />
-        )}
-        {storageError && (
-          <div role="alert">
-            <p>{storageError}</p>
-            <button type="button" onClick={canEdit ? retrySave : retryLoad}>
-              {canEdit ? "保存を再試行" : "読み込みを再試行"}
-            </button>
+      </header>
+      <div
+        className={styles.listScroll}
+        role="region"
+        tabIndex={0}
+        aria-label="すべてのタスクとファイル入出力"
+      >
+        <section className={styles.taskList} aria-label="タスク一覧">
+          {tasks.map((task) => (
+            <TaskCard
+              key={task.id}
+              task={task}
+              disabled={!canEdit}
+              onProgressChange={(id, progress) => updateTask(id, { progress })}
+              onEdit={openEdit}
+            />
+          ))}
+          {canEdit && tasks.length === 0 && (
+            <div className={styles.empty}>
+              <p>タスクはありません。</p>
+              <Button onClick={openAdd} startIcon={<Icon name="plus" />}>
+                タスクを追加
+              </Button>
+            </div>
+          )}
+        </section>
+        <section className={styles.transfer} aria-label="タスクのデータ管理">
+          <div className={styles.transferHeading}>
+            <h2>インポート・エクスポート</h2>
           </div>
-        )}
-        {hasUnsavedChanges && <p role="status">未保存の変更があります。</p>}
+          <TaskTransfer tasks={tasks} disabled={!canEdit} onImport={importTasks} />
+        </section>
       </div>
-      <TaskTransfer tasks={tasks} disabled={!canEdit} onImport={importTasks} />
-      {canEdit && tasks.length === 0 && <p>タスクはありません。</p>}
-      <TaskList
-        tasks={tasks}
-        disabled={!canEdit}
-        onProgressChange={(id, progress) => updateTask(id, { progress })}
-        onEdit={setEditingTaskId}
-      />
-    </main>
+    </div>
   );
 };
-
-type TaskListProps = {
-  tasks: Task[];
-  disabled: boolean;
-  onProgressChange: (id: string, progress: number) => void;
-  onEdit: (id: string) => void;
-};
-
-const TaskList = ({ tasks, disabled, onProgressChange, onEdit }: TaskListProps) => (
-  <section className={styles.taskList} aria-label="タスク一覧">
-    {tasks.map((task) => (
-      <TaskCard
-        key={task.id}
-        task={task}
-        disabled={disabled}
-        onProgressChange={onProgressChange}
-        onEdit={onEdit}
-      />
-    ))}
-  </section>
-);
 
 export default TasksPage;

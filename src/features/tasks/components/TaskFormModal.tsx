@@ -28,7 +28,6 @@ const formatDateInput = (date: Date | null) => {
 
 const TaskFormModal = ({ task, onSubmit, onDelete, onClose }: TaskFormModalProps) => {
   const headingId = useId();
-  const descriptionId = useId();
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
@@ -71,21 +70,18 @@ const TaskFormModal = ({ task, onSubmit, onDelete, onClose }: TaskFormModalProps
   };
 
   return (
-    <Modal open onClose={onClose} aria-labelledby={headingId} aria-describedby={descriptionId}>
+    <Modal open onClose={onClose} aria-labelledby={headingId}>
       <Box
         role="dialog"
         aria-modal="true"
         aria-labelledby={headingId}
-        aria-describedby={descriptionId}
+
         tabIndex={-1}
         className={styles.dialog}
       >
         <Box component="form" className={styles.form} onSubmit={handleSubmit}>
           <Typography id={headingId} component="h2" variant="h6">
             {task ? "タスクを編集" : "タスクを追加"}
-          </Typography>
-          <Typography id={descriptionId} variant="body2" color="text.secondary">
-            タイトルのみ必須です。他の項目は任意です。
           </Typography>
           {error && <Alert severity="error">{error}</Alert>}
           <TextField

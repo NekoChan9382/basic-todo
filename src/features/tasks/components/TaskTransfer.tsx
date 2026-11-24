@@ -93,7 +93,6 @@ const TaskTransfer = ({ tasks, disabled, onImport }: TaskTransferProps) => {
           onChange={handleImport}
         />
       </div>
-      <p className={styles.hint}>現在のタスクをファイルにエクスポートします。</p>
       {notice && (
         <Alert severity={notice.error ? "error" : "info"} role={notice.error ? "alert" : "status"}>
           {notice.text}
