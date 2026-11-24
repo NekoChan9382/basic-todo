@@ -72,6 +72,7 @@ const TaskTransfer = ({ tasks, disabled, onImport }: TaskTransferProps) => {
     <section className={styles.transfer} aria-label="タスクのインポートとエクスポート">
       <div className={styles.buttons}>
         <Button
+          className={styles.actionButton}
           type="button"
           variant="outlined"
           onClick={handleExport}
@@ -80,6 +81,7 @@ const TaskTransfer = ({ tasks, disabled, onImport }: TaskTransferProps) => {
           エクスポート
         </Button>
         <Button
+          className={styles.actionButton}
           type="button"
           variant="outlined"
           onClick={() => fileInput.current?.click()}

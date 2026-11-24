@@ -28,6 +28,7 @@ const TaskCard = ({ task, onProgressChange, onEdit, disabled = false }: TaskCard
       <div className={styles.header}>
         <h2 className={styles.title}>{task.title}</h2>
         <Button
+          className={styles.editButton}
           type="button"
           size="small"
           disabled={disabled}
@@ -37,7 +38,11 @@ const TaskCard = ({ task, onProgressChange, onEdit, disabled = false }: TaskCard
           編集
         </Button>
       </div>
-      {task.detail && <p className={styles.detail}>{task.detail}</p>}
+      {task.detail && (
+        <p className={styles.detail} title={task.detail}>
+          {task.detail}
+        </p>
+      )}
       <dl className={styles.info}>
         <div className={`${styles.item} ${styles.progressItem}`}>
           <dt>進捗</dt>

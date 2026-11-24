@@ -18,16 +18,19 @@ const TasksPage = () => {
         <div className={styles.headerActions}>
           <TaskTransfer tasks={tasks} disabled={!canEdit} onImport={importTasks} />
           <Button
+            className={styles.addButton}
+            aria-label="タスクを追加"
             variant="contained"
             startIcon={<Icon name="plus" />}
             disabled={!canEdit}
             onClick={openAdd}
           >
-            タスクを追加
+            <span className={styles.fullButtonLabel}>タスクを追加</span>
+            <span className={styles.compactButtonLabel}>追加</span>
           </Button>
         </div>
       </header>
-      <div className={styles.listScroll} role="region" tabIndex={0} aria-label="すべてのタスク">
+      <div className={styles.listContent} role="region" aria-label="すべてのタスク">
         <section className={styles.taskList} aria-label="タスク一覧">
           {tasks.map((task) => (
             <TaskCard

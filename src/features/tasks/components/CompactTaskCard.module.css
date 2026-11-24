@@ -117,3 +117,18 @@
 .card:active:not(:disabled) {
   border-color: var(--brand-ink);
 }
+
+@media (max-width: 900px) {
+  .card {
+    padding: 0.75rem;
+  }
+  .top {
+    margin-bottom: 0.375rem;
+  }
+  .detail {
+    display: none;
+  }
+  .progressRow {
+    margin-top: 0.5rem;
+  }
+}

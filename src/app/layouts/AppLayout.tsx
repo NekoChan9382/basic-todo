@@ -1,6 +1,9 @@
-import { Suspense, useState } from "react";
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { Suspense, useId, useState } from "react";
+import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import Button from "@mui/material/Button";
+import Drawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import Icon from "../../shared/components/Icon";
 import { useTasks } from "../../features/tasks/hooks/useTasks";
 import type { TaskWorkspace } from "../../features/tasks/hooks/useTaskWorkspace";
@@ -10,6 +13,13 @@ import styles from "./AppLayout.module.css";
 
 const AppLayout = () => {
   const workspace = useTasks();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const isMobile = useMediaQuery("(max-width: 900px)");
+  const isShortViewport = useMediaQuery("(max-height: 560px)");
+  const location = useLocation();
+  const scrollOwner =
+    location.pathname === "/" && !isMobile && !isShortViewport ? "panels" : "page";
+  const menuId = useId();
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const editingTask = workspace.tasks.find((task) => task.id === editingId);
@@ -20,6 +30,31 @@ const AppLayout = () => {
   };
   const incompleteCount = workspace.tasks.filter((task) => task.progress < 100).length;
 
+  const navigation = (
+    <nav className={styles.nav} aria-label="メインナビゲーション">
+      <NavLink
+        onClick={() => setIsMenuOpen(false)}
+        to="/"
+        end
+        className={({ isActive }) => `${styles.navLink} ${isActive ? styles.active : ""}`}
+        aria-label="ダッシュボード"
+      >
+        <Icon name="dashboard" />
+        <span>ダッシュボード</span>
+      </NavLink>
+      <NavLink
+        onClick={() => setIsMenuOpen(false)}
+        to="/tasks"
+        className={({ isActive }) => `${styles.navLink} ${isActive ? styles.active : ""}`}
+        aria-label="タスク一覧"
+      >
+        <Icon name="tasks" />
+        <span>タスク一覧</span>
+        <span className={styles.navCount}>{workspace.tasks.length}</span>
+      </NavLink>
+    </nav>
+  );
+
   return (
     <div className={styles.shell}>
       <a href="#main-content" className={styles.skipLink}>
@@ -29,30 +64,22 @@ const AppLayout = () => {
         <Link to="/" className={styles.brand} aria-label="Tasks ホーム">
           <span className={styles.brandName}>Tasks</span>
         </Link>
-        <nav className={styles.nav} aria-label="メインナビゲーション">
-          <NavLink
-            to="/"
-            end
-            className={({ isActive }) => `${styles.navLink} ${isActive ? styles.active : ""}`}
-            aria-label="ダッシュボード"
-          >
-            <Icon name="dashboard" />
-            <span>ダッシュボード</span>
-          </NavLink>
-          <NavLink
-            to="/tasks"
-            className={({ isActive }) => `${styles.navLink} ${isActive ? styles.active : ""}`}
-            aria-label="タスク一覧"
-          >
-            <Icon name="tasks" />
-            <span>タスク一覧</span>
-            <span className={styles.navCount}>{workspace.tasks.length}</span>
-          </NavLink>
-        </nav>
+        {navigation}
       </aside>
       <div className={styles.workspace}>
         <header className={styles.topbar}>
-          <span>タスク管理</span>
+          <div className={styles.headerTitle}>
+            <IconButton
+              className={styles.menuButton}
+              aria-label="メニューを開く"
+              aria-expanded={isMobile && isMenuOpen}
+              aria-controls={isMobile && isMenuOpen ? menuId : undefined}
+              onClick={() => setIsMenuOpen(true)}
+            >
+              <Icon name="menu" />
+            </IconButton>
+            <span>タスク管理</span>
+          </div>
           <div className={styles.storageStatus}>
             {workspace.storageError ? (
               <span className={styles.storageError} role="alert" title={workspace.storageError}>
@@ -80,13 +107,26 @@ const AppLayout = () => {
           </span>
         </header>
         <main id="main-content" tabIndex={-1} className={styles.main}>
-          <div className={styles.viewport}>
+          <div className={styles.viewport} data-scroll-owner={scrollOwner}>
             <Suspense fallback={<p role="status">読み込み中…</p>}>
               <Outlet context={context} />
             </Suspense>
           </div>
         </main>
       </div>
+      <Drawer
+        open={isMobile && isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        slotProps={{ paper: { className: styles.drawerPaper, id: menuId } }}
+      >
+        <div className={styles.drawerHeader}>
+          <span>メニュー</span>
+          <IconButton aria-label="メニューを閉じる" onClick={() => setIsMenuOpen(false)}>
+            <Icon name="close" />
+          </IconButton>
+        </div>
+        {navigation}
+      </Drawer>
       {isAddOpen && <AddTaskModal onAdd={workspace.addTask} onClose={() => setIsAddOpen(false)} />}
       {editingTask && (
         <EditTaskModal
