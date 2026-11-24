@@ -20,6 +20,7 @@ const dateFormatter = new Intl.DateTimeFormat("ja-JP", {
 
 const TaskCard = ({ task, onProgressChange, onEdit, disabled = false }: TaskCardProps) => {
   const [draftProgress, setDraftProgress] = useState<number | null>(null);
+  const [sliderRevision, setSliderRevision] = useState(0);
   const progress = draftProgress ?? task.progress;
 
   return (
@@ -64,6 +65,7 @@ const TaskCard = ({ task, onProgressChange, onEdit, disabled = false }: TaskCard
           <dt className={styles.visuallyHidden}>進捗を変更</dt>
           <dd>
             <Slider
+              key={sliderRevision}
               aria-label={`${task.title}の進捗`}
               getAriaValueText={(value) => `${value}%`}
               min={0}
@@ -77,10 +79,26 @@ const TaskCard = ({ task, onProgressChange, onEdit, disabled = false }: TaskCard
               onChange={(_, value) => {
                 if (typeof value === "number") setDraftProgress(value);
               }}
-              onChangeCommitted={(_, value) => {
+              onChangeCommitted={(event, value) => {
                 if (typeof value !== "number") return;
                 setDraftProgress(null);
                 if (value !== task.progress) onProgressChange(task.id, value);
+                if (
+                  event.type.startsWith("pointer") ||
+                  event.type.startsWith("touch") ||
+                  event.type === "mouseup"
+                ) {
+                  // ドラッグ終了時に Slider を再生成し、document の操作リスナーを破棄する。
+                  setSliderRevision((revision) => revision + 1);
+                }
+              }}
+              onPointerCancel={() => {
+                setDraftProgress(null);
+                setSliderRevision((revision) => revision + 1);
+              }}
+              onTouchCancel={() => {
+                setDraftProgress(null);
+                setSliderRevision((revision) => revision + 1);
               }}
               size="small"
             />

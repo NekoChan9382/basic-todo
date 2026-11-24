@@ -1,6 +1,5 @@
 import { Suspense, useState } from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
-import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
 import Icon from "../../shared/components/Icon";
 import { useTasks } from "../../features/tasks/hooks/useTasks";
@@ -27,8 +26,8 @@ const AppLayout = () => {
         コンテンツへ移動
       </a>
       <aside className={styles.sidebar}>
-        <Link to="/" className={styles.brand} aria-label="Tasknote ホーム">
-          <span className={styles.brandName}>Tasknote</span>
+        <Link to="/" className={styles.brand} aria-label="Tasks ホーム">
+          <span className={styles.brandName}>Tasks</span>
         </Link>
         <nav className={styles.nav} aria-label="メインナビゲーション">
           <NavLink
@@ -54,32 +53,33 @@ const AppLayout = () => {
       <div className={styles.workspace}>
         <header className={styles.topbar}>
           <span>タスク管理</span>
+          <div className={styles.storageStatus}>
+            {workspace.storageError ? (
+              <span className={styles.storageError} role="alert" title={workspace.storageError}>
+                {workspace.storageError}
+              </span>
+            ) : (
+              <span className={styles.storageMessage} role="status">
+                {workspace.hasUnsavedChanges ? "保存中…" : ""}
+              </span>
+            )}
+            <span className={styles.retrySlot}>
+              {workspace.storageError && (
+                <Button
+                  size="small"
+                  color="inherit"
+                  onClick={workspace.canEdit ? workspace.retrySave : workspace.retryLoad}
+                >
+                  再試行
+                </Button>
+              )}
+            </span>
+          </div>
           <span className={styles.remaining}>
             未完了 <strong>{incompleteCount}</strong> 件
           </span>
         </header>
         <main id="main-content" tabIndex={-1} className={styles.main}>
-          {(workspace.storageError || workspace.hasUnsavedChanges) && (
-            <div className={styles.storageStatus}>
-              {workspace.storageError ? (
-                <Alert
-                  severity="error"
-                  action={
-                    <Button
-                      color="inherit"
-                      onClick={workspace.canEdit ? workspace.retrySave : workspace.retryLoad}
-                    >
-                      再試行
-                    </Button>
-                  }
-                >
-                  {workspace.storageError}
-                </Alert>
-              ) : (
-                <p role="status">変更を保存しています…</p>
-              )}
-            </div>
-          )}
           <div className={styles.viewport}>
             <Suspense fallback={<p role="status">読み込み中…</p>}>
               <Outlet context={context} />

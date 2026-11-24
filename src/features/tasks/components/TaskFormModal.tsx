@@ -1,4 +1,4 @@
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import type { SubmitEvent } from "react";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
@@ -28,7 +28,16 @@ const formatDateInput = (date: Date | null) => {
 
 const TaskFormModal = ({ task, onSubmit, onDelete, onClose }: TaskFormModalProps) => {
   const headingId = useId();
+  const titleInputRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Modal のフォーカス制御と Portal の描画が終わった後に入力欄へ移す。
+    const frame = requestAnimationFrame(() => {
+      titleInputRef.current?.focus({ preventScroll: true });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, []);
 
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -89,7 +98,7 @@ const TaskFormModal = ({ task, onSubmit, onDelete, onClose }: TaskFormModalProps
             label="タイトル"
             defaultValue={task?.title ?? ""}
             required
-            autoFocus
+            inputRef={titleInputRef}
             fullWidth
           />
           <TextField

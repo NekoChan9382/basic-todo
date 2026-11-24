@@ -2,6 +2,8 @@ import { useRef, useState } from "react";
 import type { ChangeEvent } from "react";
 import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
+import Portal from "@mui/material/Portal";
+import Snackbar from "@mui/material/Snackbar";
 import type { Task } from "../types";
 import { exportTasksNdjson } from "../lib/taskNdjson.ts";
 import styles from "./TaskTransfer.module.css";
@@ -94,9 +96,25 @@ const TaskTransfer = ({ tasks, disabled, onImport }: TaskTransferProps) => {
         />
       </div>
       {notice && (
-        <Alert severity={notice.error ? "error" : "info"} role={notice.error ? "alert" : "status"}>
-          {notice.text}
-        </Alert>
+        <Portal>
+          <Snackbar
+            open
+            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            autoHideDuration={notice.error ? null : 4000}
+            onClose={(_, reason) => {
+              if (reason !== "clickaway") setNotice(null);
+            }}
+          >
+            <Alert
+              className={styles.notice}
+              severity={notice.error ? "error" : "success"}
+              role={notice.error ? "alert" : "status"}
+              onClose={() => setNotice(null)}
+            >
+              {notice.text}
+            </Alert>
+          </Snackbar>
+        </Portal>
       )}
     </section>
   );

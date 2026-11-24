@@ -1,8 +1,11 @@
 /* Hallmark · shape: app screen · genre: modern-minimal · theme: brand · redesign: restyle · v2.0.0 */
 /* Hallmark · pre-emit critique: P4 H4 E4 S3 R5 V3 · weakest: S, preserve the task workflow and simplify the working surfaces */
 .shell {
+  position: fixed;
+  inset: 0;
   display: grid;
   grid-template-columns: 236px minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
   height: 100dvh;
   overflow: hidden;
 }
@@ -24,6 +27,7 @@
   padding: 1.25rem 0.75rem;
   background: var(--color-paper-3);
   overflow-y: auto;
+  overscroll-behavior-y: contain;
 }
 .brand {
   display: flex;
@@ -77,8 +81,9 @@
   min-height: 0;
 }
 .topbar {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  column-gap: 1rem;
   align-items: center;
   flex-shrink: 0;
   height: 64px;
@@ -112,15 +117,38 @@
   min-height: 0;
   min-width: 0;
   overflow: hidden;
+  overscroll-behavior-y: contain;
 }
 .storageStatus {
-  flex-shrink: 0;
-  margin-bottom: 0.75rem;
-}
-.storageStatus p {
-  margin: 0;
-  color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-self: end;
+  gap: 0.5rem;
+  width: min(100%, 24rem);
+  min-width: 0;
+  height: 40px;
   font-size: 0.75rem;
+}
+.storageMessage,
+.storageError {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: right;
+}
+.storageMessage {
+  color: var(--muted);
+}
+.storageError {
+  color: var(--color-error);
+}
+.retrySlot {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 0 0 4rem;
 }
 @media (max-width: 1100px) {
   .shell {
