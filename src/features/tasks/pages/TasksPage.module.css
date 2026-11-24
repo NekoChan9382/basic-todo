@@ -1,9 +1,16 @@
-.addButton.addButton {
-  margin-bottom: 1rem;
-}
-
 .taskList {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+}
+
+.buttonBar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.buttonBar p {
+  margin: 0;
 }

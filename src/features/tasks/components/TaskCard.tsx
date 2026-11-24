@@ -1,11 +1,13 @@
 import { useState } from "react";
 import type { Task } from "../types";
 import Slider from "@mui/material/Slider";
+import Button from "@mui/material/Button";
 import styles from "./TaskCard.module.css";
 
 type TaskCardProps = {
   task: Task;
   onProgressChange: (id: string, progress: number) => void;
+  onEdit: (id: string) => void;
   disabled?: boolean;
 };
 
@@ -16,13 +18,24 @@ const dateFormatter = new Intl.DateTimeFormat("ja-JP", {
   day: "2-digit",
 });
 
-const TaskCard = ({ task, onProgressChange, disabled = false }: TaskCardProps) => {
+const TaskCard = ({ task, onProgressChange, onEdit, disabled = false }: TaskCardProps) => {
   const [draftProgress, setDraftProgress] = useState<number | null>(null);
   const progress = draftProgress ?? task.progress;
 
   return (
     <article className={styles.card}>
-      <h2 className={styles.title}>{task.title}</h2>
+      <div className={styles.header}>
+        <h2 className={styles.title}>{task.title}</h2>
+        <Button
+          type="button"
+          size="small"
+          disabled={disabled}
+          onClick={() => onEdit(task.id)}
+          aria-label={`${task.title}を編集`}
+        >
+          編集
+        </Button>
+      </div>
       {task.detail && <p className={styles.detail}>{task.detail}</p>}
       <dl className={styles.info}>
         <div className={`${styles.item} ${styles.progressItem}`}>

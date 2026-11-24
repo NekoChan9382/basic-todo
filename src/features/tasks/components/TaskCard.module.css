@@ -11,7 +11,15 @@
   overflow-wrap: anywhere;
 }
 
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
 .title {
+  min-width: 0;
   margin: 0;
   font-size: 1.125rem;
   line-height: 1.5;
